@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import { shade } from "polished";
 
 // eslint-disable-next-line import/no-unresolved
@@ -19,6 +19,26 @@ export const Content = styled.div`
   place-content: center;
   width: 100%;
   max-width: 700px;
+`;
+
+const appearFromRight = keyframes`
+  from {
+    opacity: 0;
+    transform: translateX(50px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0px);
+  }
+`;
+
+export const AnimationContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  animation: ${appearFromRight} 1s;
 
   form {
     margin: 80px 0px;
@@ -30,17 +50,29 @@ export const Content = styled.div`
     h1 {
       margin-bottom: 24px;
     }
+
+    a {
+      color: #f4ede8;
+      display: block;
+      margin-top: 24px;
+      text-decoration: none;
+      transition: color 0.2s;
+
+      &:hover {
+        color: ${shade(0.2, "#f4ede8")};
+      }
+    }
   }
 
   > a {
     display: flex;
-    color: #f4ede8;
+    color: #ff9000;
     margin-top: 24px;
     text-decoration: none;
     transition: color 0.2s;
 
     &:hover {
-      color: ${shade(0.2, "#f4ede8")};
+      color: ${shade(0.2, "#ff9000")};
     }
 
     align-items: center;
