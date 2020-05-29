@@ -1,8 +1,8 @@
-import { hash } from 'bcryptjs';
 import { injectable, inject } from 'tsyringe';
 
 import UsersRepository from '@modules/user/repositories/UserRepository';
 import AppErrors from '@shared/errors/AppErrors';
+import HashProvider from '@shared/providers/hashProvider/models/hashProvider';
 
 interface RequestDTO {
   name: string;
@@ -14,7 +14,9 @@ interface RequestDTO {
 class CreateUserService {
   constructor(
     @inject('UserRepository')
-    private usersRepository: UsersRepository
+    private usersRepository: UsersRepository,
+    @inject('HashProvider')
+    private hashedPassword: HashProvider
   ) {}
 
   public async run({ name, email, password }: RequestDTO) {
@@ -24,7 +26,7 @@ class CreateUserService {
       throw new AppErrors('Email address already used', 401);
     }
 
-    const hashedPassword = await hash(password, 8);
+    const hashedPassword = await this.hashedPassword.generateHash(password);
 
     const user = await this.usersRepository.create({
       name,
